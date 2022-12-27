@@ -1,0 +1,8 @@
+{
+    "name": "Vidly Development",
+    "mail": {
+        "host": "dev-mail-server"
+    },
+    "dbHost": "mongodb://localhost/vidlydb"
+    
+}
