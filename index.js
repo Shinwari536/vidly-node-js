@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const dbDebugger = require('debug')('app:db');
 const genreRouter = require('./routes/genreRouter');
 const customerRouter = require('./routes/customerRouter')
+const movieRouter = require('./routes/movieRouter')
 
 // create express app
 const app = express();
@@ -26,6 +27,7 @@ if (config.has('dbHost')) {
 // setting routes
 app.use('/api/genres', genreRouter);
 app.use('/api/customers', customerRouter);
+app.use('/api/movies', movieRouter);
 
 
 // start app

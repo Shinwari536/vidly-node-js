@@ -1,8 +1,6 @@
 const express = require('express');
-const { string } = require('joi');
 const Joi = require('joi');
 const { addGenre, getAllGenres, updateGenre, genreById, deleteById, deleteAll } = require('../services/genre');
-const {addCustomer} = require('../services/customer')
 const apiDebugger = require('debug')('app:genre-api');
 
 
@@ -93,23 +91,6 @@ router.put('/:id', async (req, res) => {
         res.send(error);
     }
 
-});
-
-
-router.post('/', async (req, res) => {
-    // input validation
-    const result = validate(req.body.name);
-    if (result.error) {
-        return res.send(result.error);
-    }
-    try {
-        const cust = await addCustomer(req.body.name)
-        apiDebugger("new customer: ", cust);
-        res.send(cust);
-    } catch (error) {
-        apiDebugger(error);
-        res.send(error);
-    }
 });
 
 
