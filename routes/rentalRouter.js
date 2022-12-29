@@ -47,7 +47,7 @@ router.get('/:id', async(req, res) => {
         apiDebugger(error);
         res.status(400).send(error);
     }
-})
+}) 
 
 function validate(rental) {
     const schema = Joi.object({

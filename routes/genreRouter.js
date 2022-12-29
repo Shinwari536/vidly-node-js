@@ -99,7 +99,7 @@ function validate(name) {
         name: Joi.string()
             .min(3)
             .required()
-    })
+    }) 
     return schema.validate({ name: name });
 }
 

@@ -57,7 +57,7 @@ async function newRental(customerId, movieId) {
     }
 }
 
-
+ 
 async function getAllRentals() {
     return Rental.find()
         .select('-__v -customer.__v -movie.__v');

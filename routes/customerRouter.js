@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     const result = validate(req.body.name, req.body.phone);
     if (result.error) {
         return res.send(result.error);
-    }
+    } 
     try {
         const customer = await addCustomer(req.body.name, req.body.isGold, req.body.phone)
         apiDebugger("new customer: ", customer);

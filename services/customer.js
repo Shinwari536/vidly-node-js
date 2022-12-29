@@ -46,5 +46,5 @@ async function deleteAllCustomers() {
     return await Customer
         .remove({});
 }
-
+ 
 module.exports = { getAllCustomers, addCustomer, updateCustomer, customerById, deleteCustomerById, deleteAllCustomers }
