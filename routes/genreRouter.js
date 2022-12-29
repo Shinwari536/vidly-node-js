@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
         res.send(genre);
     } catch (error) {
         apiDebugger(error);
-        res.send(error);
+        res.status(400).send(error);
     }
 });
 
@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
         res.send(genre);
     } catch (error) {
         apiDebugger('Error: ', error);
-        res.send(error);
+        res.status(400).send(error);
     }
 });
 
@@ -55,7 +55,7 @@ router.delete('/delete_all', async (req, res) => {
         res.send(result);
     } catch (error) {
         apiDebugger(error);
-        res.send(error);
+        res.status(400).send(error);
     }
 
 });

@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
         
     } catch (ex) {
         apiDebugger("Exception: ", ex);
-        res.send(ex);
+        res.status(400).send(ex);
     }
 })
 
@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
         res.send(moviesList);
     } catch (ex) {
         apiDebugger(ex);
-        res.send(ex);
+        res.status(400).send(ex);
     }
 });
 
@@ -47,7 +47,7 @@ router.get('/:id', async (req, res) => {
         res.send(movie);
     } catch (ex) {
         apiDebugger(ex);
-        res.send(ex);
+        res.status(400).send(ex);
     }
 });
 
@@ -64,7 +64,7 @@ router.put('/:id', async (req, res) => {
         res.send(movie);
     } catch (ex) {
         apiDebugger("Exception: ", ex);
-        res.send(ex);
+        res.status(400).send(ex);
     }
 })
 
@@ -79,7 +79,7 @@ router.delete('/:id', async (req, res) => {
         res.send(movie);
     } catch (ex) {
         apiDebugger(ex);
-        res.send(ex);
+        res.status(400).send(ex);
     }
 });
 
@@ -91,7 +91,7 @@ function validate(movie) {
             .required(),
         numberInStock: Joi.number(),
         dailyRentalRate: Joi.number(),
-        genreId: Joi.string()
+        genreId: Joi.objectId()
             .min(24)
             .max(24)
             .required(),

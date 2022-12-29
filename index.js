@@ -1,3 +1,5 @@
+const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi)
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -8,6 +10,7 @@ const dbDebugger = require('debug')('app:db');
 const genreRouter = require('./routes/genreRouter');
 const customerRouter = require('./routes/customerRouter')
 const movieRouter = require('./routes/movieRouter')
+const rentalRouter = require('./routes/rentalRouter')
 
 // create express app
 const app = express();
@@ -28,6 +31,7 @@ if (config.has('dbHost')) {
 app.use('/api/genres', genreRouter);
 app.use('/api/customers', customerRouter);
 app.use('/api/movies', movieRouter);
+app.use('/api/rentals', rentalRouter);
 
 
 // start app

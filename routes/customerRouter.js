@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
         res.send(customer);
     } catch (error) {
         apiDebugger(error);
-        res.send(error);
+        res.status(400).send(error);
     }
 });
 
@@ -45,7 +45,7 @@ router.get('/:id', async (req, res) => {
         res.send(customer);
     } catch (error) {
         apiDebugger('Error: ', error);
-        res.send(error);
+        res.status(400).send(error);
     }
 });
 
@@ -56,7 +56,7 @@ router.delete('/delete_all', async (req, res) => {
         res.send(result);
     } catch (error) {
         apiDebugger(error);
-        res.send(error);
+        res.status(400).send(error);
     }
 
 });
@@ -68,7 +68,7 @@ router.delete('/:id', async (req, res) => {
         res.send(deletedCustomer);
     } catch (error) {
         apiDebugger(error);
-        res.send(error);
+        res.status(400).send(error);
     }
 });
 
@@ -89,7 +89,7 @@ router.put('/:id', async (req, res) => {
         res.send(customer);
     } catch (error) {
         apiDebugger(error);
-        res.send(error);
+        res.status(400).send(error);
     }
 
 });
