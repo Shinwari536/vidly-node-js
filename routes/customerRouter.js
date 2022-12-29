@@ -1,14 +1,13 @@
 const express = require('express');
-const { string } = require('joi');
 const Joi = require('joi');
-const { getAllCustomers, addCustomer, updateCustomer, customerById, deleteCustomerById, deleteAllCustomers } = require('../services/customer');
 const apiDebugger = require('debug')('app:genre-api');
+const { getAllCustomers, addCustomer, updateCustomer, customerById, deleteCustomerById, deleteAllCustomers } = require('../services/customer');
 
 
 
 const router = express.Router();
 
-// Get all genres
+// Get all customers
 router.get('/', async (req, res) => {
     const customersList = await getAllCustomers();
     if (customersList.length === 0) {
@@ -17,7 +16,7 @@ router.get('/', async (req, res) => {
     res.send(customersList);
 });
 
-// Add new genre
+// Add new customer
 router.post('/', async (req, res) => {
     // input validation
     const result = validate(req.body.name, req.body.phone);
@@ -34,7 +33,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Get genre by ID
+// Get customer by ID
 router.get('/:id', async (req, res) => {
 
     try {
@@ -61,7 +60,7 @@ router.delete('/delete_all', async (req, res) => {
 
 });
 
-// delete genre
+// delete customer
 router.delete('/:id', async (req, res) => {
     try {
         const deletedCustomer = await deleteCustomerById(req.params.id);
@@ -73,7 +72,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 
-// update genre
+// update customer
 router.put('/:id', async (req, res) => {
     // input validation
     const result = validate(req.body.name);
@@ -84,7 +83,7 @@ router.put('/:id', async (req, res) => {
         const customer = await updateCustomer(req.params.id, req.body.name, req.body.isGold, req.body.phone);
         apiDebugger(`Updated customer: \n${customer}`);
         if (!customer) {
-            return res.status(400).send('Genre with given id is not found.')
+            return res.status(400).send('Customer with given id is not found.')
         }
         res.send(customer);
     } catch (error) {

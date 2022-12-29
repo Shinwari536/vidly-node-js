@@ -1,5 +1,5 @@
 const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi)
+Joi.objectId = require('joi-objectid')(Joi);
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -8,9 +8,10 @@ const config = require('config');
 const mongoose = require('mongoose');
 const dbDebugger = require('debug')('app:db');
 const genreRouter = require('./routes/genreRouter');
-const customerRouter = require('./routes/customerRouter')
-const movieRouter = require('./routes/movieRouter')
-const rentalRouter = require('./routes/rentalRouter')
+const customerRouter = require('./routes/customerRouter');
+const movieRouter = require('./routes/movieRouter');
+const rentalRouter = require('./routes/rentalRouter');
+const userRouter = require('./routes/userRouter');
 
 // create express app
 const app = express();
@@ -32,6 +33,7 @@ app.use('/api/genres', genreRouter);
 app.use('/api/customers', customerRouter);
 app.use('/api/movies', movieRouter);
 app.use('/api/rentals', rentalRouter);
+app.use('/api/users', userRouter);
 
 
 // start app
