@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
-const User = mongoose.model('User', mongoose.Schema({
+const userSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -19,6 +21,19 @@ const User = mongoose.model('User', mongoose.Schema({
         required: true,
         maxlength: 1024
     },
-}));
+    isAdmin: Boolean
+});
+
+// we are encapsulating the logic here in a function inside the model
+userSchema.methods.generatAuthToken = function () {
+    return jwt.sign({ // this will generate the json web token.
+        _id: this.id,   // this refers to current object
+        email: this.email,
+        isAdmin: this.isAdmin
+    }, config.get('jwtPrivateKey')); // private key set in environment variable for signing the token.
+
+}
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = { User };

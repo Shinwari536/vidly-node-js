@@ -1,8 +1,9 @@
 const express = require('express');
 const Joi = require('joi');
-const _ = require('loadash');
+const _ = require('lodash');
 const apiDebugger = require('debug')('app:user-api');
 const { getAllUsers, register, updateUser, userById } = require('../services/user');
+const authorization = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Add new genre
+// Add new user
 router.post('/', async (req, res) => {
     // input validation
     const result = validate(req.body);
@@ -29,20 +30,21 @@ router.post('/', async (req, res) => {
         return res.send(result.error);
     }
     try {
-        const user = await register(_.pick(req.body, ['name', 'email', 'password']))
+        const user = await register(_.pick(req.body, ['name', 'email', 'password']));
         apiDebugger("new user: ", user);
         res.send(_.pick(user, ['_id', 'name', 'email']));
     } catch (error) {
-        apiDebugger(error);
+        apiDebugger("Exception: ", error);
         res.status(400).send(error);
     }
 });
 
-// Get genre by ID
-router.get('/:id', async (req, res) => {
+// Get user by ID
+router.get('/me', authorization, async (req, res) => {
 
     try {
-        const user = await userById(req.params.id);
+        // authorization is the middleware, so we can have `req.user` (to get userId) from middleware
+        const user = await userById(req.user._id);
         if (!user) {
             return res.status(400).send('User with given id is not found.');
         }
@@ -88,7 +90,7 @@ function validate(user) {
             .required(),
         // repeat_password: Joi.ref('password'),
     })
-    return schema.validate({ name: user.name, email:user.email, password: user.password });
+    return schema.validate(user);
 }
 
 module.exports = router;

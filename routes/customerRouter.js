@@ -64,6 +64,9 @@ router.delete('/delete_all', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const deletedCustomer = await deleteCustomerById(req.params.id);
+        if (!deletedCustomer) {
+            return res.status(400).send('Customer with given id is not found.')
+        }
         res.send(deletedCustomer);
     } catch (error) {
         apiDebugger(error);

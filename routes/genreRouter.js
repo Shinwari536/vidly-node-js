@@ -1,6 +1,8 @@
 const express = require('express');
 const Joi = require('joi');
 const { addGenre, getAllGenres, updateGenre, genreById, deleteById, deleteAll } = require('../services/genre');
+const authorization = require('../middleware/authMiddleware');
+const isAdmin = require('../middleware/adminMiddleware');
 const apiDebugger = require('debug')('app:genre-api');
 
 
@@ -17,13 +19,22 @@ router.get('/', async (req, res) => {
 });
 
 // Add new genre
-router.post('/', async (req, res) => {
+/*
+    User of Middleware
+
+    .post('route string', [optional middleware], callbackFuntion);
+    we are are passing `authorization` as middleware here.
+    you can pass it in any method that you want to protect.
+
+*/
+router.post('/', [authorization, isAdmin], async (req, res) => { 
     // input validation
     const result = validate(req.body.name);
     if (result.error) {
         return res.send(result.error);
     }
     try {
+        apiDebugger(req.user);
         const genre = await addGenre(req.body.name)
         apiDebugger("new genre: ", genre);
         res.send(genre);
@@ -49,7 +60,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // delete all documents
-router.delete('/delete_all', async (req, res) => {
+router.delete('/delete_all', [authorization, isAdmin], async (req, res) => {
     try {
         const result = await deleteAll();
         res.send(result);
@@ -61,9 +72,12 @@ router.delete('/delete_all', async (req, res) => {
 });
 
 // delete genre
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [authorization, isAdmin], async (req, res) => {
     try {
         const deletedGenre = await deleteById(req.params.id);
+        if (!deletedGenre) {
+            return res.status(400).send('Genre with given id is not found.');
+        }
         res.send(deletedGenre);
     } catch (error) {
         apiDebugger(error);
@@ -73,7 +87,7 @@ router.delete('/:id', async (req, res) => {
 
 
 // update genre
-router.put('/:id', async (req, res) => {
+router.put('/:id', [authorization, isAdmin], async (req, res) => {
     // input validation
     const result = validate(req.body.name);
     if (result.error) {

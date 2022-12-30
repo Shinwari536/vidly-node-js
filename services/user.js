@@ -1,4 +1,4 @@
-const _ = require('loadash');
+const bcrypt = require('bcrypt');
 const { User } = require('../models/userModel');
 
 
@@ -6,19 +6,20 @@ async function getAllUsers() {
     return await User
         .find()
         .sort('name')
-        .select('-__v');
+        .select('-__v -password');
 }
 
-async function register(name, email, password) {
-    let user = await User.findOne({email: email});
+async function register(userObj) {
+    let user = await User.findOne({email: userObj.email});
     if (user) {
         throw new UserExist('User with given email already registered.');
     }
-    user = new User({
-        name: name,
-        email: email,
-        password: password
-    });
+    user = new User(userObj);
+    // hashing the password
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(user.password, salt);
+    user.password = hashed;
+    
     return await user.save();
 }
 
@@ -38,7 +39,7 @@ async function updateUser(id, name, email) {
 async function userById(id) {
     return await User
         .findById({ _id: id })
-        .select('-__v');
+        .select('-__v -password');
 }
 
 // async function deleteCustomerById(id) {

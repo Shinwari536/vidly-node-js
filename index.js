@@ -12,9 +12,18 @@ const customerRouter = require('./routes/customerRouter');
 const movieRouter = require('./routes/movieRouter');
 const rentalRouter = require('./routes/rentalRouter');
 const userRouter = require('./routes/userRouter');
+const authRouter = require('./routes/authRouter')
 
 // create express app
 const app = express();
+
+// check for private key in environment variable
+if (!config.get('jwtPrivateKey')) {
+    console.error('FATAL ERROR: jwtPrivateKey is not defined');
+    process.exit(1); // terminate the process
+}
+
+
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,6 +43,7 @@ app.use('/api/customers', customerRouter);
 app.use('/api/movies', movieRouter);
 app.use('/api/rentals', rentalRouter);
 app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
 
 
 // start app

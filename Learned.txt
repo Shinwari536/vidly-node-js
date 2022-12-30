@@ -1,0 +1,64 @@
+# What I learned in the project?
+
+Installation
+Modules
+Different Builtin Modules
+    Path
+    OS
+    File Sytem
+    Event
+    Http
+
+
+Node Package Manager
+update/installing/downgrade packages
+Semantic Versioning
+Publishing package to NPMJS
+
+
+Express
+working with Express framework of Node Js
+creating different APIs
+    1- get
+    2- post
+    3- put
+    4- delete
+
+
+Middleware
+Configuration
+Debugging
+Template Engines
+Structure of Project
+and multiple built-in and 3rd party Packages
+
+
+Connecting DB with MongoDB
+creating DB
+CRUD Operations
+Complex queries
+Comparison Query Operators (eq, gt, gte, lt , lte, in, nin)
+Logical Query operators
+Regular Expressions Query
+
+
+Mongoose validations
+Model relationships
+    1- Reference type
+    2- Embaded type
+    3- Hybrid
+
+Transaction (Two phase commit/ When making changes to multiple collection, we need to make sure that changes occurred successfully, in case of failure abort all changes)
+Custom Exception
+ObjectId
+ObjectId validation
+Authentication
+loadash package for playing with objects
+
+Storing secrets in environment variables
+JSON Web Token
+Hashing password and decryption of password
+Setting Response Headers (sending the JWT back to client in the header)
+Encapsulation of logic inside mongoose model (this is done while the creation of auth token, see user model)
+Custom Middleware
+Role-based Authorization

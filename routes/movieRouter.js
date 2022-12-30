@@ -2,12 +2,13 @@ const express = require('express');
 const Joi = require('joi');
 const apiDebugger = require('debug')('app:movie-api');
 const { addMovie, getAllMovies, getMovieById, updateMovie, deletMovie } = require('../services/movie')
-
+const authorization = require('../middleware/authMiddleware');
+const isAdmin = require('../middleware/adminMiddleware');
 
 const router = express.Router();
 
 // add new movie
-router.post('/', async (req, res) => {
+router.post('/', [authorization, isAdmin], async (req, res) => {
     try {
         const result = validate(req.body);
         if (result.error) {
@@ -52,7 +53,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // update movie
-router.put('/:id', async (req, res) => {
+router.put('/:id', [authorization, isAdmin], async (req, res) => {
     try {
         const result = validate(req.body);
         if (result.error) {
@@ -70,7 +71,7 @@ router.put('/:id', async (req, res) => {
 
 
 // Delete movie
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [authorization, isAdmin], async (req, res) => {
     try {
         const movie = await deletMovie(req.params.id);
         if (!movie) {
