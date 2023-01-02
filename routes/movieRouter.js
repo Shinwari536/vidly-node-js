@@ -9,79 +9,68 @@ const router = express.Router();
 
 // add new movie
 router.post('/', [authorization, isAdmin], async (req, res) => {
-    try {
-        const result = validate(req.body);
-        if (result.error) {
-            return res.send(result.error);
-        }
-        
-        const movie = await addMovie(req.body.title, req.body.numberInStock, req.body.dailyRentalRate, req.body.genreId);
-        res.send(movie);
-        
-    } catch (ex) {
-        apiDebugger("Exception: ", ex);
-        res.status(400).send(ex);
+    const result = validate(req.body);
+    if (result.error) {
+        return res.send(result.error);
     }
+
+    const movie = await addMovie(req.body.title, req.body.numberInStock, req.body.dailyRentalRate, req.body.genreId);
+    res.send(movie);
+    // apiDebugger("Exception: ", ex);
+    // res.status(400).send(ex);
+
 })
 
 // Get all movies
 router.get('/', async (req, res) => {
-    try {
-        const moviesList = await getAllMovies();
-        if (moviesList.length === 0) {
-            return res.status(404).send('No movie found.')
-        }
-        res.send(moviesList);
-    } catch (ex) {
-        apiDebugger(ex);
-        res.status(400).send(ex);
+    const moviesList = await getAllMovies();
+    if (moviesList.length === 0) {
+        return res.status(404).send('No movie found.')
     }
+    res.send(moviesList);
+    // apiDebugger(ex);
+    // res.status(400).send(ex);
+
 });
 
 // Get all movies
 router.get('/:id', async (req, res) => {
-    try {
-        const movie = await getMovieById(req.params.id);
-        if (!movie) {
-            return res.status(400).send('Movie with given id is not found.');
-        }
-        res.send(movie);
-    } catch (ex) {
-        apiDebugger(ex);
-        res.status(400).send(ex);
+    const movie = await getMovieById(req.params.id);
+    if (!movie) {
+        return res.status(400).send('Movie with given id is not found.');
     }
+    res.send(movie);
+    // apiDebugger(ex);
+    // res.status(400).send(ex);
+
 });
 
 // update movie
 router.put('/:id', [authorization, isAdmin], async (req, res) => {
-    try {
-        const result = validate(req.body);
-        if (result.error) {
-            return res.send(result.error);
-        }
-        // call update here
-        const movie = await updateMovie(req.params.id, req.body.title, req.body.numberInStock, req.body.dailyRentalRate, req.body.genreId);
-        console.log(movie);
-        res.send(movie);
-    } catch (ex) {
-        apiDebugger("Exception: ", ex);
-        res.status(400).send(ex);
+    const result = validate(req.body);
+    if (result.error) {
+        return res.send(result.error);
     }
+    // call update here
+    const movie = await updateMovie(req.params.id, req.body.title, req.body.numberInStock, req.body.dailyRentalRate, req.body.genreId);
+    console.log(movie);
+    res.send(movie);
+    // apiDebugger("Exception: ", ex);
+    // res.status(400).send(ex);
+
 })
 
 
 // Delete movie
 router.delete('/:id', [authorization, isAdmin], async (req, res) => {
-    try {
-        const movie = await deletMovie(req.params.id);
-        if (!movie) {
-            return res.status(400).send('Movie with given id is not found.')
-        }
-        res.send(movie);
-    } catch (ex) {
-        apiDebugger(ex);
-        res.status(400).send(ex);
+    const movie = await deletMovie(req.params.id);
+    if (!movie) {
+        return res.status(400).send('Movie with given id is not found.')
     }
+    res.send(movie);
+    // apiDebugger(ex);
+    // res.status(400).send(ex);
+
 });
 
 // validate user input
@@ -95,7 +84,7 @@ function validate(movie) {
         genreId: Joi.objectId()
             .min(24)
             .max(24)
-            .required(), 
+            .required(),
     })
     return schema.validate(movie);
 }

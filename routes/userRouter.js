@@ -29,30 +29,26 @@ router.post('/', async (req, res) => {
         apiDebugger('validation error')
         return res.send(result.error);
     }
-    try {
-        const user = await register(_.pick(req.body, ['name', 'email', 'password']));
-        apiDebugger("new user: ", user);
-        res.send(_.pick(user, ['_id', 'name', 'email']));
-    } catch (error) {
-        apiDebugger("Exception: ", error);
-        res.status(400).send(error);
-    }
+    const user = await register(_.pick(req.body, ['name', 'email', 'password']));
+    apiDebugger("new user: ", user);
+    res.send(_.pick(user, ['_id', 'name', 'email']));
+    // apiDebugger("Exception: ", error);
+    // res.status(400).send(error);
+
 });
 
 // Get user by ID
 router.get('/me', authorization, async (req, res) => {
 
-    try {
-        // authorization is the middleware, so we can have `req.user` (to get userId) from middleware
-        const user = await userById(req.user._id);
-        if (!user) {
-            return res.status(400).send('User with given id is not found.');
-        }
-        res.send(user);
-    } catch (error) {
-        apiDebugger('Error: ', error);
-        res.status(400).send(error);
+    // authorization is the middleware, so we can have `req.user` (to get userId) from middleware
+    const user = await userById(req.user._id);
+    if (!user) {
+        return res.status(400).send('User with given id is not found.');
     }
+    res.send(user);
+    // apiDebugger('Error: ', error);
+    // res.status(400).send(error);
+
 });
 
 // update user
@@ -62,17 +58,14 @@ router.put('/:id', async (req, res) => {
     if (result.error) {
         return res.send(result.error);
     }
-    try {
-        const user = await updateUser(req.params.id, req.body.name, req.body.email, req.body.password);
-        apiDebugger(`Updated user: \n${user}`);
-        if (!user) {
-            return res.status(400).send('User with given id is not found.')
-        }
-        res.send(user);
-    } catch (error) {
-        apiDebugger(error);
-        res.status(400).send(error);
+    const user = await updateUser(req.params.id, req.body.name, req.body.email, req.body.password);
+    apiDebugger(`Updated user: \n${user}`);
+    if (!user) {
+        return res.status(400).send('User with given id is not found.')
     }
+    res.send(user);
+    // apiDebugger(error);
+    // res.status(400).send(error);
 
 });
 

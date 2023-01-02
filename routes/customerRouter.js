@@ -22,15 +22,13 @@ router.post('/', async (req, res) => {
     const result = validate(req.body.name, req.body.phone);
     if (result.error) {
         return res.send(result.error);
-    } 
-    try {
-        const customer = await addCustomer(req.body.name, req.body.isGold, req.body.phone)
-        apiDebugger("new customer: ", customer);
-        res.send(customer);
-    } catch (error) {
-        apiDebugger(error);
-        res.status(400).send(error);
     }
+    const customer = await addCustomer(req.body.name, req.body.isGold, req.body.phone)
+    apiDebugger("new customer: ", customer);
+    res.send(customer);
+    // apiDebugger(error);
+    // res.status(400).send(error);
+
 });
 
 // Get customer by ID
@@ -50,28 +48,23 @@ router.get('/:id', async (req, res) => {
 
 // delete all documents
 router.delete('/delete_all', async (req, res) => {
-    try {
-        const result = await deleteAllCustomers();
-        res.send(result);
-    } catch (error) {
-        apiDebugger(error);
-        res.status(400).send(error);
-    }
+    const result = await deleteAllCustomers();
+    res.send(result);
+    // apiDebugger(error);
+    // res.status(400).send(error);
 
 });
 
 // delete customer
 router.delete('/:id', async (req, res) => {
-    try {
-        const deletedCustomer = await deleteCustomerById(req.params.id);
-        if (!deletedCustomer) {
-            return res.status(400).send('Customer with given id is not found.')
-        }
-        res.send(deletedCustomer);
-    } catch (error) {
-        apiDebugger(error);
-        res.status(400).send(error);
+    const deletedCustomer = await deleteCustomerById(req.params.id);
+    if (!deletedCustomer) {
+        return res.status(400).send('Customer with given id is not found.')
     }
+    res.send(deletedCustomer);
+    // apiDebugger(error);
+    // res.status(400).send(error);
+
 });
 
 
@@ -82,17 +75,14 @@ router.put('/:id', async (req, res) => {
     if (result.error) {
         return res.send(result.error);
     }
-    try {
-        const customer = await updateCustomer(req.params.id, req.body.name, req.body.isGold, req.body.phone);
-        apiDebugger(`Updated customer: \n${customer}`);
-        if (!customer) {
-            return res.status(400).send('Customer with given id is not found.')
-        }
-        res.send(customer);
-    } catch (error) {
-        apiDebugger(error);
-        res.status(400).send(error);
+    const customer = await updateCustomer(req.params.id, req.body.name, req.body.isGold, req.body.phone);
+    apiDebugger(`Updated customer: \n${customer}`);
+    if (!customer) {
+        return res.status(400).send('Customer with given id is not found.')
     }
+    res.send(customer);
+    // apiDebugger(error);
+    // res.status(400).send(error);
 
 });
 

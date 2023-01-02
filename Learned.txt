@@ -62,3 +62,9 @@ Setting Response Headers (sending the JWT back to client in the header)
 Encapsulation of logic inside mongoose model (this is done while the creation of auth token, see user model)
 Custom Middleware
 Role-based Authorization
+
+
+Error handling Express level (Check the Genre Router for it).
+Logging Errors (console + file)
+Error handling Node level 
+Refactoring the code

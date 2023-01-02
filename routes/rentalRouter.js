@@ -1,6 +1,7 @@
 const express = require('express');
 const Joi = require('joi');
-const { newRental, getAllRentals, getRentalById } = require('../services/rental')
+const { newRental, getAllRentals, getRentalById } = require('../services/rental');
+const NotFound = require('../helper/helpers');
 const apiDebugger = require('debug')('app:rental-api');
 
 const router = express.Router();
@@ -12,42 +13,36 @@ router.post('/', async (req, res) => {
     if (result.error) {
         return res.status(400).send(result.error)
     }
+    const rental = await newRental(req.body.customerId, req.body.movieId);
+    apiDebugger("new rental: ", rental);
+    res.send(rental);
+    // apiDebugger("Exception: ", error);
+    // res.status(400).send(error);
 
-    try {
-        const rental = await newRental(req.body.customerId, req.body.movieId);
-        apiDebugger("new rental: ", rental);
-        res.send(rental);
-    } catch (error) {
-        apiDebugger("Exception: ", error);
-        res.status(400).send(error);
-    }
 });
 
 // get all rentals
-router.get('/', async(req, res) => {
-    try {
-        const rentalList = await getAllRentals();
-        if (rentalList.length === 0) {
-            return res.status(404).send('No rental found.')
-        }
-        res.send({rentals: rentalList});
-    } catch (error) {
-        apiDebugger(error);
-        res.status(400).send(error);
-    }
+router.get('/', async (req, res) => {
+    const rentalList = await getAllRentals();
+    if (rentalList.length === 0) throw new NotFound('No rental was found')
+    res.send({ rentals: rentalList });
+    // apiDebugger(error);
+    // res.status(400).sed(error);
+
 })
 
 
 // get rental by id
-router.get('/:id', async(req, res) => {
-    try {
-        const rental = await getRentalById(req.params.id);
-        res.send({rental: rental});
-    } catch (error) {
-        apiDebugger(error);
-        res.status(400).send(error);
-    }
-}) 
+router.get('/:id', async (req, res) => {
+    const rental = await getRentalById(req.params.id);
+    if(!rental) throw new NotFound('Rental with the given id was not found')
+    res.send({ rental: rental });
+    // apiDebugger(error);
+    // res.status(400).send(error);
+
+})
+
+
 
 function validate(rental) {
     const schema = Joi.object({

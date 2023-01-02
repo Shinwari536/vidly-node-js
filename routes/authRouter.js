@@ -17,20 +17,29 @@ router.post('/', async (req, res) => {
         apiDebugger('validation error')
         return res.status(400).send(result.error);
     }
-    try {
-        const user = await authenticate(_.pick(req.body, ['email', 'password']));
-        if (user) {
-            // get auth token
-            const token = user.generatAuthToken();
-            apiDebugger("Authenticated user: ", {user: _.pick(user, ['name', 'email']), token: token});
-            res.header('x-auth-token', token).send({user: _.pick(user, ['name', 'email'])});
-            // when sending a custome header you have to prefix it with `x-` 
-            // i.e. `x-auth-token`
-        }
-    } catch (error) {
-        apiDebugger("Exception: ", error);
-        res.status(400).send(error);
+    const user = await authenticate(_.pick(req.body, ['email', 'password']));
+    if (user) {
+        // get auth token
+        const token = user.generatAuthToken();
+        apiDebugger("Authenticated user: ", { user: _.pick(user, ['name', 'email']), token: token });
+        res.header('x-auth-token', token).send({ user: _.pick(user, ['name', 'email']) });
+        // when sending a custome header you have to prefix it with `x-` 
+        // i.e. `x-auth-token`
     }
+    // try {
+    //     const user = await authenticate(_.pick(req.body, ['email', 'password']));
+    //     if (user) {
+    //         // get auth token
+    //         const token = user.generatAuthToken();
+    //         apiDebugger("Authenticated user: ", {user: _.pick(user, ['name', 'email']), token: token});
+    //         res.header('x-auth-token', token).send({user: _.pick(user, ['name', 'email'])});
+    //         // when sending a custome header you have to prefix it with `x-` 
+    //         // i.e. `x-auth-token`
+    //     }
+    // } catch (error) {
+    //     apiDebugger("Exception: ", error);
+    //     res.status(400).send(error);
+    // }
 });
 
 
