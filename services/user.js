@@ -10,7 +10,7 @@ async function getAllUsers() {
 }
 
 async function register(userObj) {
-    let user = await User.findOne({email: userObj.email});
+    let user = await User.findOne({ email: userObj.email });
     if (user) {
         throw new UserExist('User with given email already registered.');
     }
@@ -19,7 +19,7 @@ async function register(userObj) {
     const salt = await bcrypt.genSalt(10);
     const hashed = await bcrypt.hash(user.password, salt);
     user.password = hashed;
-    
+
     return await user.save();
 }
 
@@ -42,6 +42,17 @@ async function userById(id) {
         .select('-__v -password');
 }
 
+async function uploadProfile(id, avatar) {
+    console.log("user id:", id);
+    return await User
+        .findByIdAndUpdate({ _id: id }, {
+            $set: {
+                avatar: avatar
+            }
+        })
+        .select('-__v -password');
+}
+
 // async function deleteCustomerById(id) {
 //     return await User
 //         .findByIdAndRemove({ _id: id })
@@ -58,4 +69,4 @@ function UserExist(message) {
     this.name = 'UserAlreadyExistException'
 }
 
-module.exports = { getAllUsers, register, updateUser, userById }
+module.exports = { getAllUsers, register, updateUser, userById, uploadProfile }

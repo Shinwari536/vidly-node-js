@@ -16,6 +16,10 @@ const userSchema = mongoose.Schema({
         unique: true,
         maxlength: 256
     },
+    avatar: {
+        type: String,
+        maxlength: 256
+    },
     password: {
         type: String,
         required: true,

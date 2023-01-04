@@ -1,4 +1,5 @@
 {
-    "jwtPrivateKey" : "vidly_jwtPrivateKey"
+    "jwtPrivateKey" : "vidly_jwtPrivateKey",
+    "baseURI" : "vidly_baseuri"
     
 }
